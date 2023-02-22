@@ -1,5 +1,5 @@
 module FSM_tb();
-
+//FSM testbench to check functionality of FSM for AES Encoder/Decoder
 //Define inputs/outputs
 reg in_clka, in_clkb, in_restart, in_enable, in_encode;
 wire out_key_gen, out_outcode;
