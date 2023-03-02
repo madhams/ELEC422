@@ -39,7 +39,7 @@ dp dat_path (.clka (in_clka),
             .out2 (out_2),
             .out3 (out_3),
             .data_out (out_data),
-            .key_out (out_key),
+            .key_out (out_key)
             );
 
 endmodule
