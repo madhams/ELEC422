@@ -14,10 +14,11 @@ output   state[2:0], key_gen, outcode;
 //-------------Input ports Data Type-------------------
 wire    clka, clkb, restart, enable, encode;
 //-------------Output Ports Data Type------------------
-reg     key_gen, outcode;
+reg     out1, out2, out3;
 //——————Internal Constants--------------------------
 parameter SIZE = 3;
 parameter IDLE  = 3'b000, KEY_GEN_1 = 3'b001, KEY_GEN_2 = 3'b010, ENCODE = 3'b011, DECODE = 3'b100;
+parameter LOAD_BYTE1 = 3'b101, LOAD_BYTE2 = 3'b110;
 //-------------Internal Variables---------------------------
 reg   [SIZE-1:0]          state;    	// Initial FSM state reg and then after
 					// processing new output FSM state reg
@@ -36,11 +37,17 @@ function [SIZE-1:0] fsm_function;
 case(state)
    IDLE: begin
              if (enable == 1) begin
-               fsm_function = KEY_GEN_1;
+               fsm_function = LOAD_BYTE1;
              end else begin
                fsm_function = IDLE;
              end
-         end 
+         end
+   LOAD_BYTE1 : begin
+             fsm_function = LOAD_BYTE2;
+   end
+   LOAD_BYTE2 : begin
+             fsm_function = KEY_GEN_1;
+   end 
    KEY_GEN_1: begin
              fsm_function = KEY_GEN_2;
          end
@@ -75,33 +82,55 @@ begin : OUTPUT_LOGIC
   case(next_state)
   IDLE: begin
           state <= next_state;
-          key_gen <= 1'b0;
-          outcode <= 1'b0;
+          out1  <= 1'b0;
+          out2 <= 1'b0;
+          out3 <= 1'b0;
         end
+
+  LOAD_BYTE1 : begin
+          state <= next_state;
+          out1  <= 1'b1;
+          out2 <= 1'b0;
+          out3 <= 1'b0;       
+        end
+
+  LOAD_BYTE2 : begin
+          state <= next_state;
+          out1  <= 1'b0;
+          out2 <= 1'b1;
+          out3 <= 1'b0;
+        end
+
   KEY_GEN_1: begin
           state <= next_state;
-          key_gen <= 1'b1;
-          outcode <= 1'b0;
+          out1  <= 1'b1;
+          out2 <= 1'b1;
+          out3 <= 1'b0;
         end
   KEY_GEN_2: begin
           state <= next_state;
-          key_gen <= 1'b1;
-          outcode <= 1'b0;
+          out1  <= 1'b0;
+          out2 <= 1'b1;
+          out3 <= 1'b1;         
+
          end
   ENCODE: begin
           state <= next_state;
-          key_gen <= 1'b0;
-          outcode <= 1'b1;
+          out1 <= 1'b0;
+          out2 <= 1'b0;
+          out3 <= 1'b1;      
          end
   DECODE: begin
           state <= next_state;
-          key_gen <= 1'b1;
-          outcode <= 1'b1;
+          out1 <= 1'b1;
+          out2 <= 1'b0;
+          out3 <= 1'b1;
          end
  default: begin
           state <= next_state;
-          key_gen <= 1'b0;
-          outcode <= 1'b0;
+          out1 <= 1'b0;
+          out2 <= 1'b0;
+          out3 <= 1'b0;
          end
   endcase
 end // End Of Block OUTPUT_LOGIC
