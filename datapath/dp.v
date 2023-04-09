@@ -1,7 +1,7 @@
-module dp (clka, clkb, restart, d_in, key_in, rc,  out1, out2, out3, data_out, key_out);
+module dp (clka, clkb, restart, d_in, key_in,  out1, out2, out3, data_out, key_out);
 
 input clka, clkb, restart, out1, out2, out3;
-input [7:0] d_in, key_in, rc;
+input [7:0] d_in, key_in;
 
 output [15:0] data_out, key_out;
 
@@ -11,8 +11,8 @@ reg [15:0] start_data, start_key, key1, key2;
 reg [15:0] d1_temp, d2_temp, dout_temp;
 wire [15:0] temp_key1, temp_key2, d1_en, d2_en, do_en, d1_de, d2_de, do_de;
 
-key_gen key_gen1 (.input_key (start_key), .round_constant (rc), .output_key (temp_key1));
-key_gen key_gen2 (.input_key (key1), .round_constant (rc), .output_key (temp_key2));
+key_gen key_gen1 (.input_key (start_key), .output_key (temp_key1));
+key_gen key_gen2 (.input_key (key1), .output_key (temp_key2));
 
 encoder enc1 (.in_message (start_data), .out_message (d1_en), .in_key (start_key));
 encoder enc2 (.in_message (d1_temp), .out_message (d2_en), .in_key (key1));
