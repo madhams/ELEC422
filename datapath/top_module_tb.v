@@ -4,7 +4,7 @@ module FSM_tb();
 reg in_clka, in_clkb, in_restart, in_enable, in_encode;
 wire in_out1, in_out2, in_out3;
 wire[2:0] out_state;
-reg[7:0] in_d_in, in_key_in, round_constant;
+reg[7:0] in_d_in, in_key_in;
 wire[15:0] out_data_out, out_key_out;
 //Create FSM object
 proj_FSM U1(
@@ -23,7 +23,6 @@ dp U2 (.clka(in_clka),
         .restart(in_restart),
         .d_in(in_d_in),
         .key_in(in_key_in),
-        .rc(round_constant),
         .out1(in_out1),
         .out2(in_out2),
         .out3(in_out3),
@@ -42,7 +41,6 @@ in_clka = 0;
 in_clkb = 0;
 in_d_in = 8'b01101111;
 in_key_in = 8'b10100111;
-round_constant = 8'b10000000;
 #10
 in_clka = 1;
 in_clkb = 0;
