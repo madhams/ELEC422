@@ -12,7 +12,7 @@
 #/* Edit this part only of the file.                                     */
 #/* Add all verilog files, separated by spaces after keyword "list"      */
 
-set my_verilog_files [list dp.v decoder.v encoder.v key_gen.v main_FSM.v MC.v r_box.v s_box.v SR.v top_mod.v]
+set my_verilog_files [list dp.v decoder.v encoder.v key_gen.v main_FSM.v MC.v r_box.v s_box.v SR.v top_mod.v reverse_MC.v]
 
 #/* Top-level Module Name update                            */
 set my_toplevel top_mod
