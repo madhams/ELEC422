@@ -11,16 +11,16 @@ reg [15:0] start_data, start_key, key1, key2;
 reg [15:0] d1_temp, d2_temp, dout_temp;
 wire [15:0] temp_key1, temp_key2, d1_en, d2_en, do_en, d1_de, d2_de, do_de;
 
-key_gen key_gen1 (.input_key (start_key), .round_constant(8'b10011101), .output_key (temp_key1));
-key_gen key_gen2 (.input_key (key1), .round_constant(8'b00101110), .output_key (temp_key2));
+key_gen key_gen1 (.input_key (start_key), .round_constant(8'b10000000), .output_key (temp_key1));
+key_gen key_gen2 (.input_key (key1), .round_constant(8'b00110000), .output_key (temp_key2));
 
 encoder enc1 (.in_message (start_data), .out_message (d1_en), .in_key (start_key));
-encoder enc2 (.in_message (d1_temp), .out_message (d2_en), .in_key (key1));
-encoder enc3 (.in_message (d2_temp), .out_message (do_en), .in_key (key2));
-  
+encoder enc2 (.in_message (d1_en), .out_message (d2_en), .in_key (key1));
+encoder enc3 (.in_message (d2_en), .out_message (do_en), .in_key (key2));
+
 decoder dec1 (.in_message (start_data), .out_message (d1_de), .in_key (key2));
-decoder dec2 (.in_message (d1_temp), .out_message (d2_de), .in_key (key1));
-decoder dec3 (.in_message (d2_temp), .out_message (do_de), .in_key (start_key));
+decoder dec2 (.in_message (d1_de), .out_message (d2_de), .in_key (key1));
+decoder dec3 (.in_message (d2_de), .out_message (do_de), .in_key (start_key));
  
 
 always @ (negedge clka)
